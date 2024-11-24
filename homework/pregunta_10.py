@@ -4,7 +4,17 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 `tbl2.tsv`. En este laboratorio solo puede utilizar las funciones y 
 librerias de pandas para resolver las preguntas.
 """
+import glob
+import pandas as pd
 
+# Carga los datos de un archivo.
+def load_input(path: str):
+    files = glob.glob(path)
+    dataframe = pd.read_csv(
+            files[0],
+            delimiter="\t",
+        )
+    return dataframe
 
 def pregunta_10():
     """
@@ -20,3 +30,6 @@ def pregunta_10():
     D                   1:2:3:5:5:7
     E   1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+    dataframe = load_input("files/input/tbl0.tsv")
+    dataframe = dataframe.groupby("c1")["c2"].apply(lambda x: ":".join(sorted(x.astype(str))))
+    return dataframe.to_frame()
